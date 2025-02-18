@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard Sidebar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./dashboard.css">
+</head>
+<body>
+    <div class="sidebar">
+        <img src="./assets/images/logo.webp" alt="">
+        <ul class="menu">
+            <li  onclick="window.location.href='./dashboard.html'"><i class="fa-solid fa-clock"></i> Expiring</li>
+            <li class="active" onclick="window.location.href='manage.html'"><i class="fa-solid fa-list"></i> Manage</li>
+            <li onclick="window.location.href='analytics.html'"><i class="fa-solid fa-chart-line"></i> Analytics</li>
+        </ul>
+        <div class="logout" onclick="window.location.href='./index.html.html'"><i class="fa-solid fa-sign-out-alt"></i> Logout</div>
+    </div>
+    <div class="content">
+        <div id="expiring" class="page active">
+            <div class="header">
+                <h2>DASHBOARD</h2>
+                <div class="search-wrapper">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search.." />
+                        <button>
+                            <img src="./assets/images/search.png" alt="" height="30px" width="30px"> <!-- Unicode search icon -->
+                        </button>
+                    </div>
+                </div>        
+            </div>
+            <!-- HEADER ENDS -->
+        <div class="container manage-plans-container">
+            <h2>Manage Plans</h2>
+            <div class="category-form">
+            <h3>Add Category</h3>
+            <input type="text" id="categoryName" placeholder="Category Name">
+            <button onclick="addCategory()">Add Category</button>
+            </div>
+            <div class="plan-form">
+            <h3>Add Plan</h3>
+            <input type="text" id="planName" placeholder="Plan Name">
+            <input type="text" id="planPrice" placeholder="Plan Price">
+            <input type="text" id="planValidity" placeholder="Plan Validity">
+            <select id="planCategory">
+                <option value="">Select Category</option>
+            </select>
+            <button onclick="addPlan()">Add Plan</button>
+            </div>
+            <div class="plan-list" id="planList">
+            <h3>All Plans</h3>
+            </div>
+        </div>
+        <style>
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgba(0,0,0,0.8); 
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+            text-align: center;
+            color: black;
+            border-radius: 10px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        </style>
+
+        <script>
+            let categories = [];
+            let plans = [];
+
+            function addCategory() {
+            let category = document.getElementById("categoryName").value;
+            if (category) {
+                categories.push(category);
+                document.getElementById("categoryName").value = "";
+                updateCategoryDropdown();
+            }
+            }
+
+            function updateCategoryDropdown() {
+            let dropdown = document.getElementById("planCategory");
+            dropdown.innerHTML = '<option value="">Select Category</option>';
+            categories.forEach(cat => {
+                dropdown.innerHTML += `<option value="${cat}">${cat}</option>`;
+            });
+            }
+
+            function addPlan() {
+            let name = document.getElementById("planName").value;
+            let price = document.getElementById("planPrice").value;
+            let validity = document.getElementById("planValidity").value;
+            let category = document.getElementById("planCategory").value;
+            if (name && price && validity && category) {
+                let plan = { name, price, validity, category };
+                plans.push(plan);
+                document.getElementById("planName").value = "";
+                document.getElementById("planPrice").value = "";
+                document.getElementById("planValidity").value = "";
+                document.getElementById("planCategory").value = "";
+                displayPlans();
+            }
+            }
+
+            function displayPlans() {
+            let list = document.getElementById("planList");
+            list.innerHTML = '<h3>All Plans</h3>';
+            plans.forEach((plan, index) => {
+                list.innerHTML += `
+                <div class='plan-item'>
+                    <span>${plan.name} - ${plan.price} - ${plan.validity} days (${plan.category})</span>
+                    <button onclick="editPlan(${index})">Edit</button>
+                    <button onclick="deletePlan(${index})">Delete</button>
+                </div>`;
+            });
+            }
+
+            function deletePlan(index) {
+            plans.splice(index, 1);
+            displayPlans();
+            }
+
+            function editPlan(index) {
+            let plan = plans[index];
+            document.getElementById("planName").value = plan.name;
+            document.getElementById("planPrice").value = plan.price;
+            document.getElementById("planValidity").value = plan.validity;
+            document.getElementById("planCategory").value = plan.category;
+            deletePlan(index);
+            }
+        </script>
+        <!-- logout pop up -->
+        <div id="logoutPopup" class="logout-popup">
+        <img src="./assets/images/tick-mark.png" alt="" height="30px" width="30px"><br>
+        Logged Out successfully
+        </div>
+
+<script src="./script.js"></script>
+    
+</body>
+</html>

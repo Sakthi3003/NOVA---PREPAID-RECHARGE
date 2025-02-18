@@ -1,0 +1,138 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: grid;
+  place-items: center;
+  gap: 50px;
+  margin: 0;
+  height: 100vh;
+  padding: 0 32px;
+  background: whitesmoke;
+  font-family: "Poppins";
+}
+
+@media (width >= 500px) {
+  body {
+    padding: 0;
+  }
+}
+
+@keyframes move {
+  100% {
+    transform: translateY(-20px);
+  }
+}
+
+.background {
+  position: fixed;
+  top: -50vmin;
+  left: -50vmin;
+  width: 100vmin;
+  height: 100vmin;
+  border-radius: 47% 53% 61% 39% / 45% 51% 49% 55%;
+  background: #124E66;
+  /* animation: move 3s alternate infinite linear; */
+}
+
+.background::after {
+  content: "";
+  position: inherit;
+  right: -50vmin;
+  bottom: -55vmin;
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+  background:#2E3944;
+  /* animation-direction: alternate-reverse; */
+}
+
+.card {
+  overflow: hidden;
+  position: relative;
+  z-index: 3;
+  width: 94%;
+  margin: 0 20px;
+  padding: 54px 30px;
+  border-radius: 24px;
+  background: rgb(0 0 0 / 20%);
+  backdrop-filter: blur(10px);
+  text-align: center;
+  box-shadow: 0 100px 100px rgb(0 0 0 / 10%);
+}
+
+@media (width >= 500px) {
+  .card {
+    margin: 0;
+    width: 360px;
+  }
+}
+
+.card{
+  background-color: white;
+}
+
+.card .logo {
+  width: 70%;
+  height: 70%;
+  margin-bottom: 20px;
+}
+
+.card > h2 {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 38px;
+  color:#4f5e61;
+}
+
+.form {
+  margin: 0 0 44px;
+  display: grid;
+  gap: 12px;
+}
+
+.form :is(input, button) {
+  width: 100%;
+  height: 56px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-family: inherit;
+  outline: none;
+}
+
+.form > input:hover {
+  border: 2px solid #124E66; /* Change the border color on hover */
+}
+
+.form > input {
+  border: 2px solid #D3D9D4;
+  padding: 0 24px;
+  color: #222222;
+  background: #ffffff;
+}
+
+.form > input::placeholder {
+  color: rgb(0 0 0 / 28%);
+}
+
+.form > button {
+  border: 0;
+  color: #f9f9f9;
+  background: #124E66;
+  display: grid;
+  place-items: center;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.card > footer {
+  color: #a1a1a1;
+}
+
+.card > footer > a {
+  color: #8c9096;
+}
+

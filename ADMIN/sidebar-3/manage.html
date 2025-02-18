@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Plans</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        
+        .container {
+            margin-left: 100px;
+            padding: 20px;
+            width: 100%;
+        }
+        .plan-form, .category-form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        .plan-form input, .category-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .plan-form button, .category-form button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .plan-list {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .plan-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .plan-item button {
+            margin-left: 10px;
+            background: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* be */
+
+        .benefits-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.benefit {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: #f8f9fa;
+    padding: 5px 10px;
+    border-radius: 8px;
+}
+
+.benefit-img {
+    width: 24px;
+    height: 24px;
+}
+
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <button onclick="window.location.href='dashboard.html'"><i class='bx bx-home'></i></button>
+        <button><i class='bx bx-category'></i></button>
+    </aside>
+    <div class="container">
+        <h2>Manage Plans</h2>
+        <div class="category-form">
+            <h3>Add Category</h3>
+            <input type="text" id="categoryName" placeholder="Category Name">
+            <button onclick="addCategory()">Add Category</button>
+        </div>
+        <div class="plan-form">
+            <h3>Add Plan</h3>
+            <input type="text" id="planName" placeholder="Plan Name">
+            <input type="text" id="planPrice" placeholder="Plan Price">
+            <input type="text" id="planValidity" placeholder="Plan Validity">
+            <input type="text" id="planSMS" placeholder="SMS">
+            <input type="text" id="planCalls" placeholder="Calls">
+            <input type="text" id="planData" placeholder="Data">
+            <select id="planCategory">
+                <option value="">Select Category</option>
+            </select>
+            <button onclick="addPlan()">Add Plan</button>
+        </div>
+        <div class="plan-list" id="planList">
+            <h3>All Plans</h3>
+        </div>
+    </div>
+    <div id="toast" class="toast"></div>
+    <script>
+        let categories = [];
+        let plans = [];
+
+        function addCategory() {
+            let category = document.getElementById("categoryName").value;
+            if (category) {
+                categories.push(category);
+                document.getElementById("categoryName").value = "";
+                updateCategoryDropdown();
+                showToast("Category added successfully");
+            }
+        }
+
+        function updateCategoryDropdown() {
+            let dropdown = document.getElementById("planCategory");
+            dropdown.innerHTML = '<option value="">Select Category</option>';
+            categories.forEach(cat => {
+                dropdown.innerHTML += `<option value="${cat}">${cat}</option>`;
+            });
+        }
+
+        function addPlan() {
+            let name = document.getElementById("planName").value;
+            let price = document.getElementById("planPrice").value;
+            let validity = document.getElementById("planValidity").value;
+            let sms = document.getElementById("planSMS").value;
+            let calls = document.getElementById("planCalls").value;
+            let data = document.getElementById("planData").value;
+            let category = document.getElementById("planCategory").value;
+            if (name && price && validity && sms && calls && data && category) {
+                let plan = { name, price, validity, sms, calls, data, category };
+                plans.push(plan);
+                document.getElementById("planName").value = "";
+                document.getElementById("planPrice").value = "";
+                document.getElementById("planValidity").value = "";
+                document.getElementById("planSMS").value = "";
+                document.getElementById("planCalls").value = "";
+                document.getElementById("planData").value = "";
+                document.getElementById("planCategory").value = "";
+                displayPlans();
+                showToast("Plan added successfully");
+            }
+        }
+
+        function displayPlans() {
+            let list = document.getElementById("planList");
+            list.innerHTML = '<h3>All Plans</h3>';
+            plans.forEach((plan, index) => {
+                list.innerHTML += `
+                    <div class='plan-item'>
+                        <span>${plan.name} - $${plan.price} - ${plan.validity} days - ${plan.sms} SMS - ${plan.calls} Calls - ${plan.data} Data (${plan.category})</span>
+                        <button onclick="deletePlan(${index})">Delete</button>
+                    </div>`;
+            });
+        }
+
+        function deletePlan(index) {
+            plans.splice(index, 1);
+            displayPlans();
+            showToast("Plan removed successfully");
+        }
+
+        function showToast(message) {
+            let toast = document.getElementById("toast");
+            toast.innerText = message;
+            toast.className = "show";
+            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+        }
+    </script>
+    <style>
+        .toast {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+        }
+
+        .toast.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        @-webkit-keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+
+        @-webkit-keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+    </style>
+</body>
+</html>

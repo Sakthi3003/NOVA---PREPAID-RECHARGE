@@ -1,0 +1,213 @@
+<style>
+    /* Layout - Split into 4:8 */
+    .container {
+        display: flex;
+        height: 100vh;
+        padding: 20px;
+        background: #f4f6f9;
+    }
+
+    .left-panel {
+        width: 35%;
+        border-right: 2px solid #ddd;
+        padding-right: 20px;
+    }
+
+    .right-panel {
+        width: 65%;
+        padding-left: 20px;
+    }
+
+    /* Customer Cards */
+    .customer-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .customer-card {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background: white;
+        padding: 15px;
+        border-radius: 12px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        transition: 0.3s ease-in-out;
+        cursor: pointer;
+        border-left: 6px solid #007bff;
+    }
+
+    .customer-card:hover {
+        background: #eef3ff;
+        transform: scale(1.02);
+    }
+
+    /* User Avatar */
+    .user-avatar {
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #ddd;
+    }
+
+    /* Info Section */
+    .customer-info {
+        flex-grow: 1;
+    }
+
+    .customer-card h3 {
+        margin: 0;
+        font-size: 18px;
+        color: #333;
+    }
+
+    .customer-card p {
+        margin: 3px 0;
+        color: #666;
+        font-size: 14px;
+    }
+
+    /* Plan Icons */
+    .plan-icon {
+        font-size: 20px;
+        color: #007bff;
+        margin-right: 5px;
+    }
+
+    /* View Button */
+    .view-btn {
+        padding: 8px 12px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    .view-btn:hover {
+        background: #218838;
+    }
+
+    /* Profile Section */
+    .profile-card {
+        display: none;
+        border: 1px solid #ddd;
+        padding: 20px;
+        background: #fff;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-card img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-bottom: 10px;
+        border: 3px solid #007bff;
+    }
+
+    .profile-card h3 {
+        margin: 10px 0 5px;
+        color: #333;
+    }
+
+    .profile-card p {
+        margin: 5px 0;
+        color: #666;
+        font-size: 15px;
+    }
+
+    .close-btn {
+        margin-top: 10px;
+        padding: 7px 12px;
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    .close-btn:hover {
+        background: #c82333;
+    }
+</style>
+
+<!-- Main Layout -->
+<div class="container">
+    <!-- Left Side: Customer List -->
+    <div class="left-panel">
+        <h2>Expiring Plans</h2>
+        <div class="customer-list" id="customerList"></div>
+    </div>
+
+    <!-- Right Side: Profile Details -->
+    <div class="right-panel">
+        <h2>Customer Profile</h2>
+        <div class="profile-card" id="profileSection">
+            <img id="profileImg" src="" alt="User">
+            <h3 id="profileName"></h3>
+            <p><strong>Mobile:</strong> <span id="profileMobile"></span></p>
+            <p><strong>Plan:</strong> <span id="profilePlan"></span></p>
+            <p><strong>Expiry:</strong> <span id="profileExpiry"></span></p>
+            <button class="close-btn" onclick="closeProfile()">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Sample Data with User Images & Plan Icons
+    const customers = [
+        { id: 1, name: "John Doe", plan: "Unlimited 5G", expiry: "2 Days", mobile: "9876543210", img: "https://randomuser.me/api/portraits/men/1.jpg", icon: "📶" },
+        { id: 2, name: "Jane Smith", plan: "Data 10GB", expiry: "3 Days", mobile: "9234567890", img: "https://randomuser.me/api/portraits/women/2.jpg", icon: "💾" },
+        { id: 3, name: "Alex Brown", plan: "Voice + Data 30GB", expiry: "1 Day", mobile: "9876543120", img: "https://randomuser.me/api/portraits/men/3.jpg", icon: "📞" },
+    ];
+
+    // Load Customer Data into Cards
+    function loadCustomers() {
+        let customerList = document.getElementById("customerList");
+        customerList.innerHTML = "";
+
+        customers.forEach(customer => {
+            let card = `
+                <div class="customer-card">
+                    <img src="${customer.img}" class="user-avatar" alt="User">
+                    <div class="customer-info">
+                        <h3>${customer.name}</h3>
+                        <p><strong>Plan:</strong> <span class="plan-icon">${customer.icon}</span> ${customer.plan}</p>
+                        <p><strong>Expires In:</strong> ${customer.expiry}</p>
+                    </div>
+                    <button class="view-btn" onclick="viewProfile(${customer.id})">View</button>
+                </div>
+            `;
+            customerList.innerHTML += card;
+        });
+    }
+
+    // Show Profile
+    function viewProfile(customerId) {
+        let customer = customers.find(c => c.id === customerId);
+        if (customer) {
+            document.getElementById("profileImg").src = customer.img;
+            document.getElementById("profileName").innerText = customer.name;
+            document.getElementById("profileMobile").innerText = customer.mobile;
+            document.getElementById("profilePlan").innerText = customer.plan;
+            document.getElementById("profileExpiry").innerText = customer.expiry;
+
+            document.getElementById("profileSection").style.display = "block";
+        }
+    }
+
+    // Close Profile
+    function closeProfile() {
+        document.getElementById("profileSection").style.display = "none";
+    }
+
+    // Load Customers on Page Load
+    document.addEventListener("DOMContentLoaded", loadCustomers);
+</script>

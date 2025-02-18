@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NOVA - Mobile Prepaid Recharge</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Unicons CSS -->
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="./stylemain.css">
+    <style>
+        /* Dropdown Menu */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 50px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 150px;
+            padding: 10px 0;
+            text-align: left;
+        }
+
+        .dropdown-menu a {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: black;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .dropdown-menu a:hover {
+            background: #f1f1f1;
+        }
+
+        /* Content */
+        .content {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        @media (max-width: 991px) {
+            .navbar-container {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .navbar-collapse {
+                text-align: center;
+            }
+
+            .navbar-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .user-icon {
+                display: none;
+            }
+        }
+
+        @media (max-width: 991px) {
+            .navbar-container {
+                flex-direction: row;
+                justify-content: space-between;
+            }
+
+            .navbar-collapse {
+                text-align: center;
+            }
+
+            .navbar-nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            /* Hide user icon */
+            .user-icon {
+                display: none;
+            }
+
+            /* Show Login option in menu */
+            .login-item {
+                display: block !important;
+            }
+        }
+
+        /* Initially hide Login option for large screens */
+        .login-item {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container-fluid navbar-container">
+        <!-- Logo -->
+        <a class="navbar-brand" href="#">
+            <img src="./assets/images/logo.webp" alt="NOVA Logo">
+        </a>
+
+        <!-- Navbar Toggler (for mobile) -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar Links -->
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Recharge</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Plans</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">FAQ</a></li>
+                <li class="nav-item login-item"><a class="nav-link" href="#">Login</a></li>
+            </ul>
+        </div>
+
+        <!-- User Icon with Dropdown -->
+        <div class="user-icon">
+            <img src="./assets/images/user.webp" alt="User" id="userDropdown">
+            <div class="dropdown-menu" id="dropdownMenu">
+                <a href="./subscriber-profile.html">My Profile</a>
+                <a href="index.html" id="logout">Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Recharge Section -->
+<div class="recharge-section">
+    <div class="recharge-input a">
+        <input type="tel" placeholder="9867543657" maxlength="10">
+    </div>
+    <p class="validation-message" id="validationMsg"></p>
+</div>
+
+<!-- search bar section -->
+<div class="search-bar-container">
+    <div class="input-box">
+        <input type="text" placeholder="Search...">
+        <span class="icon">
+            <i class="uil uil-search search-icon"></i>
+        </span>
+        <i class="uil uil-times close-icon"></i>
+    </div>
+</div>
+
+<!-- Filter Section -->
+<ul class="nav nav-underline d-flex justify-content-center">
+    <li class="nav-items">
+        <a id="popularTab" class="nav-link active" href="#">Popular Plans</a>
+    </li>
+    <li class="nav-items">
+        <a id="validityTab" class="nav-link" href="#">Validity Plans</a>
+    </li>
+    <li class="nav-items">
+        <a id="dataTab" class="nav-link" href="#">Data Plans</a>
+    </li>
+    <li class="nav-items">
+        <a id="unlimitedTab" class="nav-link" href="#">Unlimited Plans</a>
+    </li>
+</ul>
+
+<!-- Content Section -->
+<div id="plansContent">
+    <!-- Popular Plans -->
+    <div id="popularPlans" class="cards"></div>
+
+    <!-- Validity Plans (Initially hidden) -->
+    <div id="validityPlans" class="cards" style="display: none;"></div>
+
+    <!-- Data Plans (Initially hidden) -->
+    <div id="dataPlans" class="cards" style="display: none;"></div>
+
+    <!-- Unlimited Plans (Initially hidden) -->
+    <div id="unlimitedPlans" class="cards" style="display: none;"></div>
+</div>
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="rechargeModal" tabindex="-1" aria-labelledby="rechargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header with Background Color -->
+            <div class="modal-header" style="background-color: #124E66; color: white;">
+                <h5 class="modal-title" id="rechargeModalLabel">Recharge Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="filter: invert(1);"></button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body text-center">
+                <p style="font-size: 18px; font-weight: 500;">Do you want to proceed with the recharge?</p>
+            </div>
+
+            <!-- Modal Footer with Styled Buttons -->
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-danger px-4 py-2" data-bs-dismiss="modal" style="border-radius: 8px; font-size: 16px;">No</button>
+                <button type="button" class="btn btn-success px-4 py-2" id="confirmRechargeBtn" style="border-radius: 8px; font-size: 16px;">Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Example plan data
+    const plans = {
+        popular: [
+            { name: "NOVA Unlimited", price: "Rs.299", validity: "28 Days", data: "2GB/day", call: "Unlimited", benefits: "Free SMS" },
+            { name: "NOVA Unlimited", price: "Rs.299", validity: "28 Days", data: "2GB/day", call: "Unlimited", benefits: "Free SMS" },
+            { name: "NOVA Unlimited", price: "Rs.299", validity: "28 Days", data: "2GB/day", call: "Unlimited", benefits: "Free SMS" },
+            { name: "NOVA Unlimited", price: "Rs.299", validity: "28 Days", data: "2GB/day", call: "Unlimited", benefits: "Free SMS" },
+            { name: "NOVA Unlimited", price: "Rs.299", validity: "28 Days", data: "2GB/day", call: "Unlimited", benefits: "Free SMS" },
+            { name: "NOVA Unlimited", price: "Rs.299", validity: "28 Days", data: "2GB/day", call: "Unlimited", benefits: "Free SMS" },
+            { name: "NOVA Unlimited", price: "Rs.299", validity: "28 Days", data: "2GB/day", call: "Unlimited", benefits: "Free SMS" },
+            // Add more plans here
+        ],
+        validity: [
+            { name: "NOVA Validity", price: "Rs.199", validity: "56 Days", data: "1GB/day", call: "Unlimited", benefits: "Free SMS" },
+            // Add more plans here
+        ],
+        data: [
+            { name: "NOVA Data", price: "Rs.99", validity: "28 Days", data: "3GB/day", call: "Unlimited", benefits: "Free SMS" },
+            // Add more plans here
+        ],
+        unlimited: [
+            { name: "NOVA Unlimited Plus", price: "Rs.399", validity: "84 Days", data: "2GB/day", call: "Unlimited", benefits: "Free SMS" },
+            // Add more plans here
+        ]
+    };
+
+    function renderPlans(planType, containerId) {
+        const container = document.getElementById(containerId);
+        container.innerHTML = ''; // Clear existing content
+
+        plans[planType].forEach(plan => {
+            const planCard = `
+                <label>
+                    <input type="checkbox" class="flip-card-checkbox">
+                    <article>
+                        <div class="front">
+                            <var>${plan.name}</var>
+                            <h3>${plan.price}</h3>
+                            <p>Validity : ${plan.validity}</p>
+                            <button class="recharge-btn btn btn-primary" data-bs-toggle="modal" data-bs-target="#rechargeModal" style="background-color: #124E66; border: none; padding: 12px 20px; font-size: 16px; border-radius: 8px;">
+                                Recharge Now
+                            </button>
+                            <p style="font-size: 12px;">More Information</p>
+                        </div>
+                        <div class="back">
+                            <p>Data : ${plan.data}</p>
+                            <p>Call : ${plan.call}</p>
+                            <p>Additional benefits: ${plan.benefits}</p>
+                        </div>
+                    </article>
+                </label>
+            `;
+            container.innerHTML += planCard;
+        });
+    }
+
+    // Tab functionality
+    const popularTab = document.getElementById('popularTab');
+    const validityTab = document.getElementById('validityTab');
+    const dataTab = document.getElementById('dataTab');
+    const unlimitedTab = document.getElementById('unlimitedTab');
+
+    const popularPlans = document.getElementById('popularPlans');
+    const validityPlans = document.getElementById('validityPlans');
+    const dataPlans = document.getElementById('dataPlans');
+    const unlimitedPlans = document.getElementById('unlimitedPlans');
+
+    popularTab.addEventListener("click", () => {
+        // Show Popular Plans, hide the others
+        popularPlans.style.display = 'flex';
+        validityPlans.style.display = 'none';
+        dataPlans.style.display = 'none';
+        unlimitedPlans.style.display = 'none';
+
+        // Add active class to Popular Plans tab, remove from others
+        popularTab.classList.add('active');
+        validityTab.classList.remove('active');
+        dataTab.classList.remove('active');
+        unlimitedTab.classList.remove('active');
+
+        // Render Popular Plans
+        renderPlans('popular', 'popularPlans');
+    });
+
+    validityTab.addEventListener('click', () => {
+        // Show Validity Plans, hide the others
+        validityPlans.style.display = 'flex';
+        popularPlans.style.display = 'none';
+        dataPlans.style.display = 'none';
+        unlimitedPlans.style.display = 'none';
+
+        // Add active class to Validity Plans tab, remove from others
+        validityTab.classList.add('active');
+        popularTab.classList.remove('active');
+        dataTab.classList.remove('active');
+        unlimitedTab.classList.remove('active');
+
+        // Render Validity Plans
+        renderPlans('validity', 'validityPlans');
+    });
+
+    dataTab.addEventListener('click', () => {
+        // Show Data Plans, hide the others
+        dataPlans.style.display = 'flex';
+        popularPlans.style.display = 'none';
+        validityPlans.style.display = 'none';
+        unlimitedPlans.style.display = 'none';
+
+        // Add active class to Data Plans tab, remove from others
+        dataTab.classList.add('active');
+        popularTab.classList.remove('active');
+        validityTab.classList.remove('active');
+        unlimitedTab.classList.remove('active');
+
+        // Render Data Plans
+        renderPlans('data', 'dataPlans');
+    });
+
+    unlimitedTab.addEventListener('click', () => {
+        // Show Unlimited Plans, hide the others
+        unlimitedPlans.style.display = 'flex';
+        popularPlans.style.display = 'none';
+        validityPlans.style.display = 'none';
+        dataPlans.style.display = 'none';
+
+        // Add active class to Unlimited Plans tab, remove from others
+        unlimitedTab.classList.add('active');
+        popularTab.classList.remove('active');
+        validityTab.classList.remove('active');
+        dataTab.classList.remove('active');
+
+        // Render Unlimited Plans
+        renderPlans('unlimited', 'unlimitedPlans');
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        let rechargeButtons = document.querySelectorAll(".rb");
+
+        rechargeButtons.forEach(button => {
+            button.addEventListener("click", function () {
+                window.location.href = "payment.html";
+            });
+        });
+
+        // Dropdown functionality
+        const userDropdown = document.getElementById('userDropdown');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        userDropdown.addEventListener('click', () => {
+            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!userDropdown.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.style.display = 'none';
+            }
+        });
+
+        // Render initial Popular Plans
+        renderPlans('popular', 'popularPlans');
+    });
+
+    // script for modal
+    document.getElementById("confirmRechargeBtn").addEventListener("click", function () {
+        // Close the modal
+        var modal = bootstrap.Modal.getInstance(document.getElementById('rechargeModal'));
+        modal.hide();
+
+        // Redirect to the CardsCD page after a short delay
+        setTimeout(function () {
+            window.location.href = "CardsCD.html"; // Update with the actual path to your page
+        }, 500);
+    });
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,165 @@
+{
+    "categories": [
+        {
+            "id": 1,
+            "name": "Popular Plans"
+        },
+        {
+            "id": 2,
+            "name": "Data Plans"
+        },
+        {
+            "id": 3,
+            "name": "Top-Up Plans"
+        },
+        {
+            "id": 4,
+            "name": "Unlimited Plans"
+        },
+        {
+            "id": 5,
+            "name": "5G Plans"
+        },
+        {
+            "id": 6,
+            "name": "Budget-Friendly Plans"
+        }
+    ],
+    "plans": [
+        {
+            "id": 1,
+            "name": "NOVA 299 Unlimited",
+            "category_id": 1,
+            "price": 299,
+            "validity": "28 Days",
+            "data": "2GB/day",
+            "calls": "Unlimited"
+        },
+        {
+            "id": 2,
+            "name": "NOVA 399 Premium",
+            "category_id": 1,
+            "price": 399,
+            "validity": "28 Days",
+            "data": "3GB/day",
+            "calls": "Unlimited"
+        },
+        {
+            "id": 3,
+            "name": "NOVA 249 Budget Pack",
+            "category_id": 6,
+            "price": 249,
+            "validity": "24 Days",
+            "data": "1.5GB/day",
+            "calls": "Unlimited"
+        },
+        {
+            "id": 4,
+            "name": "NOVA 187 Super Saver",
+            "category_id": 6,
+            "price": 187,
+            "validity": "28 Days",
+            "data": "2GB/day",
+            "calls": "Unlimited"
+        },
+        {
+            "id": 5,
+            "name": "NOVA 151 Work from Home",
+            "category_id": 2,
+            "price": 151,
+            "validity": "30 Days",
+            "data": "50GB",
+            "calls": "NA"
+        },
+        {
+            "id": 6,
+            "name": "NOVA 401 Data Booster",
+            "category_id": 2,
+            "price": 401,
+            "validity": "28 Days",
+            "data": "100GB",
+            "calls": "NA"
+        },
+        {
+            "id": 7,
+            "name": "NOVA 98 Top-Up",
+            "category_id": 3,
+            "price": 98,
+            "validity": "NA",
+            "data": "NA",
+            "calls": "Talktime 84 Rs"
+        },
+        {
+            "id": 8,
+            "name": "NOVA 200 Full Talktime",
+            "category_id": 3,
+            "price": 200,
+            "validity": "NA",
+            "data": "NA",
+            "calls": "Talktime 200 Rs"
+        },
+        {
+            "id": 9,
+            "name": "NOVA 599 Annual Pack",
+            "category_id": 4,
+            "price": 599,
+            "validity": "84 Days",
+            "data": "2GB/day",
+            "calls": "Unlimited"
+        },
+        {
+            "id": 10,
+            "name": "NOVA 999 Family Pack",
+            "category_id": 4,
+            "price": 999,
+            "validity": "84 Days",
+            "data": "3GB/day",
+            "calls": "Unlimited"
+        },
+        {
+            "id": 11,
+            "name": "NOVA 1197 Annual Plus",
+            "category_id": 4,
+            "price": 1197,
+            "validity": "365 Days",
+            "data": "1.5GB/day",
+            "calls": "Unlimited"
+        },
+        {
+            "id": 12,
+            "name": "NOVA 365 Premium",
+            "category_id": 4,
+            "price": 365,
+            "validity": "60 Days",
+            "data": "1GB/day",
+            "calls": "Unlimited"
+        },
+        {
+            "id": 13,
+            "name": "NOVA 899 5G Pack",
+            "category_id": 5,
+            "price": 899,
+            "validity": "30 Days",
+            "data": "Unlimited 5G",
+            "calls": "Unlimited"
+        },
+        {
+            "id": 14,
+            "name": "NOVA 799 5G Plus",
+            "category_id": 5,
+            "price": 799,
+            "validity": "28 Days",
+            "data": "Unlimited 5G",
+            "calls": "Unlimited"
+        },
+        {
+            "id": 15,
+            "name": "NOVA 1099 5G Ultra",
+            "category_id": 5,
+            "price": 1099,
+            "validity": "30 Days",
+            "data": "Unlimited 5G",
+            "calls": "Unlimited"
+        }
+    ]
+}

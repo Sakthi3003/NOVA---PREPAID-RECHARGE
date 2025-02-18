@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NOVA - OTP Verification</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Roboto", sans-serif;
+    }
+
+    .login {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f8f9fa;
+    }
+
+    .card {
+      width: 94%;
+      max-width: 380px;
+      padding: 40px 30px;
+      border-radius: 15px;
+      text-align: center;
+      background: #ffffff;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .otp-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .otp-container input {
+      width: 45px;
+      height: 45px;
+      font-size: 20px;
+      text-align: center;
+      border-radius: 8px;
+      border: 2px solid #D3D9D4;
+      outline: none;
+      transition: border 0.3s ease-in-out;
+    }
+
+    .otp-container input:focus {
+      border: 2px solid #124E66;
+    }
+
+    .verify-btn {
+      width: 100%;
+      height: 50px;
+      border: none;
+      color: white;
+      background: #124E66;
+      font-size: 16px;
+      font-weight: 500;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background 0.3s ease-in-out;
+    }
+
+    .verify-btn:hover {
+      background: #0d3a4f;
+    }
+
+    .resend {
+      font-size: 14px;
+      margin-top: 15px;
+      color: #626462;
+    }
+
+    .resend a {
+      text-decoration: none;
+      color: #124E66;
+      font-weight: bold;
+      display: none;
+    }
+
+    .resend a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+<!-- OTP VERIFICATION -->
+<section class="login">
+  <div class="card">
+    <h2>OTP VERIFICATION</h2>
+    <div class="otp-container">
+      <input type="text" maxlength="1">
+      <input type="text" maxlength="1">
+      <input type="text" maxlength="1">
+      <input type="text" maxlength="1">
+    </div>
+    <button type="button" class="verify-btn">Verify</button>
+    <p class="resend">Resend OTP in <span id="timer">10</span> seconds</p>
+    <p class="resend"><a href="#" id="resend">Resend OTP</a></p>
+  </div>
+</section>
+
+<!-- Toast for OTP Display -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+  <div class="toast" id="otpToast" role="alert">
+    <div class="toast-header">
+      <strong class="me-auto">NOVA OTP</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+    </div>
+    <div class="toast-body" id="otpMessage"></div>
+  </div>
+</div>
+
+<!-- Success Modal -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Login Successful</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-center">
+        <p>You have successfully logged in!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  let generatedOTP = generateOTP();
+  showToast(`Your OTP is: ${generatedOTP}`);
+
+  function generateOTP() {
+    return Math.floor(1000 + Math.random() * 9000);
+  }
+
+  function showToast(message) {
+    document.getElementById("otpMessage").innerText = message;
+    let toast = new bootstrap.Toast(document.getElementById("otpToast"));
+    toast.show();
+  }
+
+  let timer = 10;
+  const timerElement = document.getElementById("timer");
+  const resendElement = document.getElementById("resend");
+
+  function countdown() {
+    if (timer > 0) {
+      timer--;
+      timerElement.innerText = timer;
+      setTimeout(countdown, 1000);
+    } else {
+      resendElement.style.display = "block";
+    }
+  }
+  countdown();
+
+  resendElement.addEventListener("click", function () {
+    generatedOTP = generateOTP();
+    showToast(`Your new OTP is: ${generatedOTP}`);
+    resendElement.style.display = "none";
+    timer = 10;
+    countdown();
+  });
+
+  const inputs = document.querySelectorAll(".otp-container input");
+  inputs.forEach((input, index) => {
+    input.addEventListener("input", (e) => {
+      if (e.target.value && index < inputs.length - 1) {
+        inputs[index + 1].focus();
+      }
+    });
+
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Backspace" && index > 0 && !input.value) {
+        inputs[index - 1].focus();
+      }
+    });
+  });
+
+  document.querySelector(".verify-btn").addEventListener("click", function () {
+    let enteredOTP = Array.from(inputs).map(input => input.value).join("");
+    if (enteredOTP === generatedOTP.toString()) {
+      new bootstrap.Modal(document.getElementById("successModal")).show();
+      setTimeout(() => {
+        window.location.href = "./subscriber-profile.html";
+      }, 2000);
+    } else {
+      showToast("Incorrect OTP. Please try again.");
+    }
+  });
+</script>
+
+</body>
+</html>

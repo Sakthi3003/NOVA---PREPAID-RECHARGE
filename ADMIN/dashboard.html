@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard Sidebar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./dashboard.css">
+</head>
+<body>
+    <div class="sidebar">
+        <img src="./assets/images/logo.webp" alt="">
+        <ul class="menu">
+            <li class="active" onclick="window.location.href='expiring.html'"><i class="fa-solid fa-clock"></i> Expiring</li>
+            <li onclick="window.location.href='manage.html'"><i class="fa-solid fa-list"></i> Manage</li>
+            <li onclick="window.location.href='analytics.html'"><i class="fa-solid fa-chart-line"></i> Analytics</li>
+        </ul>
+        <div class="logout" onclick="window.location.href='./index.html'"><i class="fa-solid fa-sign-out-alt"></i> Logout</div>
+    </div>
+    <div class="content">
+        <div id="expiring" class="page active">
+            <div class="header">
+                <h2>DASHBOARD</h2>
+                <div class="search-wrapper">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search.." />
+                        <button>
+                            <img src="./assets/images/search.png" alt="" height="30px" width="30px"> <!-- Unicode search icon -->
+                        </button>
+                    </div>
+                </div>        
+            </div>
+            <!-- HEADER ENDS -->
+            <!-- EXPIRING CUSTOMERS LIST -->
+               <!-- Filters -->
+        <div class="filter-buttons">
+            <button id="filter1" onclick="filterByDays(1)">1 Day</button>
+            <button id="filter2" onclick="filterByDays(2)">2 Days</button>
+            <button id="filter3" onclick="filterByDays(3)">3 Days</button>
+            <button id="filterAll" onclick="filterByDays(0)" class="active">All</button>
+        </div>
+
+        <!-- Subscribers List -->
+        <div>
+            <h4>Subscribers with Expiring Plans</h4>
+            <ul id="subscribersList" class="subscriber-list"></ul>
+        </div>
+
+        <!-- Transaction Table -->
+        <div>
+            <h4>Transaction Details</h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="transactionTableBody">
+                    <tr><td colspan="3">Select a subscriber to view transactions</td></tr>
+                </tbody>
+            </table>
+            <button id="downloadTransaction" disabled>Download Transactions</button>
+        </div>
+    </div>
+
+
+        
+    </div>
+        <div id="analytics" class="page">
+            <div class="header">
+                <h2>DASHBOARD</h2>
+                <div class="search-wrapper">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search.." />
+                        <button>
+                            <img src="./assets/images/search.png" alt="" height="30px" width="30px"> <!-- Unicode search icon -->
+                        </button>
+                    </div>
+                </div>        
+            </div>
+            <!-- HEADER ENDS -->
+            <p>View analytics data here.</p>
+        <div class="row">
+        </div>
+        <div id="manage" class="page">
+            <h2>Manage Plans</h2>
+            <p>Manage your plans here.</p>
+        </div>  
+    </div>
+
+    <!-- logout pop up -->
+    <div id="logoutPopup" class="logout-popup">
+        <img src="./assets/images/tick-mark.png" alt="" height="30px" width="30px"><br>
+        Logged Out successfully
+    </div>
+
+    <script src="./script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Plans</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f4f6f9;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+        .category-form, .plan-form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        .category-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .plans-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .plan-card {
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .plan-card img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .plan-card button {
+            background: red;
+            margin-top: 10px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Manage Plans</h2>
+        <div class="category-form">
+            <h3>Add Category</h3>
+            <input type="text" id="categoryName" placeholder="Category Name">
+            <button onclick="addCategory()">Add Category</button>
+        </div>
+        <div class="plan-form">
+            <h3>Add Plan</h3>
+            <input type="text" id="planName" placeholder="Plan Name">
+            <input type="text" id="planPrice" placeholder="Plan Price">
+            <input type="text" id="planValidity" placeholder="Plan Validity">
+            <input type="file" id="planImage" accept="image/*">
+            <select id="planCategory">
+                <option value="">Select Category</option>
+            </select>
+            <button onclick="addPlan()">Add Plan</button>
+        </div>
+        <div id="categoriesContainer"></div>
+    </div>
+    <script>
+        let categories = {};
+
+        function addCategory() {
+            let categoryName = document.getElementById("categoryName").value;
+            if (categoryName && !categories[categoryName]) {
+                categories[categoryName] = [];
+                updateCategoryDropdown();
+                renderCategories();
+            }
+        }
+
+        function updateCategoryDropdown() {
+            let dropdown = document.getElementById("planCategory");
+            dropdown.innerHTML = '<option value="">Select Category</option>';
+            Object.keys(categories).forEach(cat => {
+                dropdown.innerHTML += `<option value="${cat}">${cat}</option>`;
+            });
+        }
+
+        function addPlan() {
+            let name = document.getElementById("planName").value;
+            let price = document.getElementById("planPrice").value;
+            let validity = document.getElementById("planValidity").value;
+            let category = document.getElementById("planCategory").value;
+            let imageInput = document.getElementById("planImage");
+            let imageUrl = imageInput.files.length > 0 ? URL.createObjectURL(imageInput.files[0]) : "https://via.placeholder.com/100";
+
+            if (name && price && validity && category) {
+                categories[category].push({ name, price, validity, imageUrl });
+                renderCategories();
+            }
+        }
+
+        function renderCategories() {
+            let container = document.getElementById("categoriesContainer");
+            container.innerHTML = "";
+            Object.keys(categories).forEach(category => {
+                let categoryCard = `<div class='category-card'><h3>${category}</h3><div class='plans-container'>`;
+                categories[category].forEach((plan, index) => {
+                    categoryCard += `
+                        <div class='plan-card'>
+                            <img src='${plan.imageUrl}' alt='Plan Image'>
+                            <p><strong>${plan.name}</strong></p>
+                            <p>Price: $${plan.price}</p>
+                            <p>Validity: ${plan.validity} days</p>
+                            <button onclick='deletePlan("${category}", ${index})'>Delete</button>
+                        </div>
+                    `;
+                });
+                categoryCard += `</div></div>`;
+                container.innerHTML += categoryCard;
+            });
+        }
+
+        function deletePlan(category, index) {
+            categories[category].splice(index, 1);
+            renderCategories();
+        }
+    </script>
+</body>
+</html>

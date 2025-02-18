@@ -1,0 +1,95 @@
+<style>
+    /* Updated Card Layout */
+    .customer-card {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background: #fff;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        transition: 0.3s ease-in-out;
+        cursor: pointer;
+        border-left: 5px solid #007bff;
+    }
+
+    .customer-card:hover {
+        background: #f8f9fa;
+        transform: scale(1.02);
+    }
+
+    /* User Avatar */
+    .user-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        background: #ddd;
+    }
+
+    /* Info Section */
+    .customer-info {
+        flex-grow: 1;
+    }
+
+    .customer-card h3 {
+        margin: 0;
+        font-size: 18px;
+        color: #333;
+    }
+
+    .customer-card p {
+        margin: 5px 0;
+        color: #666;
+        font-size: 14px;
+    }
+
+    .view-btn {
+        padding: 6px 10px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    .view-btn:hover {
+        background: #218838;
+    }
+</style>
+
+<div class="customer-list" id="customerList"></div>
+
+<script>
+    // Sample Data with User Images
+    const customers = [
+        { id: 1, name: "John Doe", plan: "Unlimited 5G", expiry: "2 Days", mobile: "9876543210", img: "https://randomuser.me/api/portraits/men/1.jpg" },
+        { id: 2, name: "Jane Smith", plan: "Data 10GB", expiry: "3 Days", mobile: "9234567890", img: "https://randomuser.me/api/portraits/women/2.jpg" },
+        { id: 3, name: "Alex Brown", plan: "Voice + Data 30GB", expiry: "1 Day", mobile: "9876543120", img: "https://randomuser.me/api/portraits/men/3.jpg" },
+    ];
+
+    // Load Customer Data into Cards
+    function loadCustomers() {
+        let customerList = document.getElementById("customerList");
+        customerList.innerHTML = ""; // Clear existing cards
+
+        customers.forEach(customer => {
+            let card = `
+                <div class="customer-card">
+                    <img src="${customer.img}" class="user-avatar" alt="User">
+                    <div class="customer-info">
+                        <h3>${customer.name}</h3>
+                        <p><strong>Plan:</strong> ${customer.plan}</p>
+                        <p><strong>Expires In:</strong> ${customer.expiry}</p>
+                    </div>
+                    <button class="view-btn" onclick="viewProfile(${customer.id})">View</button>
+                </div>
+            `;
+            customerList.innerHTML += card;
+        });
+    }
+
+    // Load Customers on Page Load
+    document.addEventListener("DOMContentLoaded", loadCustomers);
+</script>

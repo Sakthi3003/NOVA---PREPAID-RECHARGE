@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NOVA - Mobile Prepaid Recharge</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Roboto", serif;
+  
+    }
+
+    /* Modern Navbar */
+    .navbar-custom {
+      background: linear-gradient(135deg, #ffffff, #ffffff);
+      padding: 10px 15px;
+      margin: 0px;
+    }
+
+    /* Navbar Items */
+    .navbar-nav {
+      gap: 30px;
+    }
+
+    /* Navbar Links */
+    .nav-link {
+      position: relative;
+      color: black;
+      font-size: 1rem;
+      font-weight: 400;
+      padding: 8px 10px;
+      transition: color 0.3s ease-in-out;
+    }
+
+    .nav-link:hover {
+      color: #333;
+    }
+
+    /* Underline animation */
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -3px;
+      width: 0;
+      height: 2px;
+      background-color: #124E66;
+      transition: width 0.3s ease-in-out, left 0.3s ease-in-out;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+      left: 0;
+    }
+
+    /* Logo Styling */
+    .navbar-brand img {
+      width: 70px;
+      height: auto;
+    }
+
+    /* User Icon */
+    .user-icon {
+      display: block; /* Visible on larger screens */
+    }
+
+    .user-icon img {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .user-icon img:hover {
+      transform: scale(1.1);
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Navbar Toggler */
+    .navbar-toggler {
+      border: none;
+      outline: none;
+    }
+
+    /* Center alignment for navbar content */
+    .navbar-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    @media (max-width: 991px) {
+      .navbar-container {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+      
+      .navbar-collapse {
+        text-align: center;
+      }
+
+      .navbar-nav {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      /* Hide user icon */
+      .user-icon {
+        display: none;
+      }
+
+      /* Show Login option in menu */
+      .login-item {
+        display: block !important;
+      }
+    }
+  .card {
+  overflow: hidden;
+  position: relative;
+margin: 50px 50px;
+  z-index: 3;
+  width: 94%;
+  /* margin: 0 20px; */
+  padding: 54px 30px;
+  border-radius: 24px;
+  background: rgb(0 0 0 / 20%);
+  backdrop-filter: blur(10px);
+  text-align: center;
+  box-shadow: 0 100px 100px rgb(0 0 0 / 10%);
+}
+
+@media (width >= 500px) {
+  .card {
+  margin: 0;
+  width: 360px;
+  }
+}
+
+.card{
+  background-color: white;
+}
+
+.card .logo {
+  width: 70%;
+  height: 70%;
+  margin-bottom: 20px;
+}
+
+.card > h2 {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 38px;
+  color:#4f5e61;
+}
+
+.form {
+  margin: 0 0 44px;
+  display: grid;
+  gap: 12px;
+}
+
+.form :is(input, button) {
+  width: 100%;
+  height: 56px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-family: inherit;
+  outline: none;
+}
+
+.form > input:hover {
+  border: 2px solid #124E66; /* Change the border color on hover */
+}
+
+.form > input {
+  border: 2px solid #D3D9D4;
+  padding: 0 24px;
+  color: #222222;
+  background: #ffffff;
+}
+
+.form > input::placeholder {
+  color: rgb(0 0 0 / 28%);
+}
+
+.form > button {
+  border: 0;
+  color: #f9f9f9;
+  background: #124E66;
+  display: grid;
+  place-items: center;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.card > footer {
+  color: #a1a1a1;
+}
+
+.card > footer > a {
+  color: #8c9096;
+}
+
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+}
+
+.phone-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  border: 2px solid #D3D9D4;
+  border-radius: 10px;
+  padding: 0 16px;
+}
+
+.phone-input .country-code {
+  font-size: 16px;
+  color: #626462;
+  font-weight: bold;
+}
+
+.phone-input input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 16px 0;
+  font-size: 16px;
+}
+
+</style>
+
+<!-- Add this inside <head> for toast styling -->
+<style>
+  /* Toast styling */
+  .toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1050;
+  }
+
+  .toast {
+    display: none;
+    min-width: 250px;
+    padding: 16px;
+    background-color: #124E66;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    animation: fadeInOut 4s ease-in-out;
+  }
+
+  .toast.show {
+    display: block;
+  }
+
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(20px); }
+    10% { opacity: 1; transform: translateY(0); }
+    90% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(20px); }
+  }
+</style>
+
+  </style>
+</head>
+<body>
+</nav>
+<section class="login">
+  <div class="background"></div>
+  <div class="card">
+  <img class="logo" src="./assets/images/logo.webp" style="display: block; margin: 0 auto;"/>
+  <h2 style="padding: 20px;">LOGIN</h2>
+  <form class="form">
+    <div class="phone-input">
+    <span class="country-code">+91</span>
+    <input id="phoneNumber" type="tel" placeholder="Enter 10 digit phone number" maxlength="10"/>
+    </div>
+    <button id="generateOtpButton" type="submit" disabled="true">Generate OTP</button>
+ 
+  </form>
+  </div>
+</section>
+
+
+
+
+<!-- Toast container -->
+<div class="toast-container">
+  <div id="otpToast" class="toast">OTP sent successfully!</div>
+</div>
+
+<script>
+  // Predefined valid phone numbers (simulating a database check)
+  const validPhoneNumbers = ["9342593511", "9876543210", "9123456789"];
+
+  // Select the form and the necessary elements
+  const form = document.querySelector('.form');
+  const phoneNumberInput = document.getElementById('phoneNumber');
+  const generateOtpButton = document.getElementById('generateOtpButton');
+  const otpToast = document.getElementById('otpToast');
+  
+  // Error message element
+  const errorMessage = document.createElement("div");
+  errorMessage.style.color = "red";
+  errorMessage.style.marginTop = "5px";
+  errorMessage.style.fontSize = "14px";
+  
+  // Insert error message below the input field
+  phoneNumberInput.parentNode.insertAdjacentElement("afterend", errorMessage);
+
+  // Handle form submission and display toast
+  form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const phoneNumber = phoneNumberInput.value;
+      
+      // Check if phone number is in the valid list
+      if (validPhoneNumbers.includes(phoneNumber)) {
+          // Show toast message
+          otpToast.classList.add('show');
+
+          // Auto-hide toast after 4 seconds
+          setTimeout(() => {
+              otpToast.classList.remove('show');
+              window.location.href = './otp.html'; // Redirect to OTP page
+          }, 4000);
+      } else {
+          errorMessage.textContent = "Invalid phone number. Please enter a valid number.";
+      }
+  });
+
+  // Enable/Disable OTP button based on phone number input
+  phoneNumberInput.addEventListener('input', function() {
+      const phoneNumber = phoneNumberInput.value;
+      
+      // Ensure only numbers are entered
+      if (!/^[0-9]*$/.test(phoneNumber)) {
+          errorMessage.textContent = "Only numeric values are allowed.";
+          generateOtpButton.setAttribute('disabled', 'true');
+          return;
+      } else {
+          errorMessage.textContent = "";
+      }
+
+      // Enable OTP button if phone number is valid (10 digits)
+      if (phoneNumber.length === 10) {
+          generateOtpButton.removeAttribute('disabled');
+      } else {
+          generateOtpButton.setAttribute('disabled', 'true');
+      }
+  });
+</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Logins</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+      /* Modal Styling */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      .modal-content {
+        background-color: #fff;
+        margin: 15% auto;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        width: 300px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+      }
+      .modal-content h3 {
+        color: green;
+      }
+      .close-btn {
+        background: #f44336;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background"></div>
+    <div class="card">
+      <img class="logo" src="logo.webp" />
+      <h2>Welcome Aboard, Admin!</h2>
+      <form class="form">
+        <input type="text" id="username" placeholder="Username" />
+        <input type="password" id="password" placeholder="Password" />
+        <p id="error-msg" style="color: red; display: none;"></p>
+        <button type="submit">Sign In</button>
+      </form>
+      <footer>
+        <a href="./enter_email.html">Forgot Password?</a>
+      </footer>
+    </div>
+
+    <!-- Modal Structure -->
+    <div id="success-modal" class="modal">
+      <div class="modal-content">
+        <h3>Login Successful! ✅</h3>
+        <button class="close-btn">Close</button>
+      </div>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        $(".form").submit(function (event) {
+          event.preventDefault(); // Prevent form submission
+
+          let username = $("#username").val().trim();
+          let password = $("#password").val().trim();
+
+          if (username === "" || password === "") {
+            $("#error-msg").text("Username and password are required!").show();
+            return;
+          }
+
+          if (username === "admin" && password === "1234") {
+            $("#error-msg").hide();
+            $("#success-modal").fadeIn(); // Show modal
+
+            setTimeout(function () {
+              $("#success-modal").fadeOut();
+              window.location.href = "dashboard.html"; // Redirect after 2 seconds
+            }, 500);
+          } else {
+            $("#error-msg").text("Invalid username or password!").show();
+          }
+        });
+
+        $(".close-btn").click(function () {
+          $("#success-modal").fadeOut();
+        });
+      });
+    </script>
+  </body>
+</html>

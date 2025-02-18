@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="tailwindcss-colors.css">
+    <link rel="stylesheet" href="stylep.css">
+    <title>Payment Page</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", serif;
+        }
+
+        /* Spinner */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #124E66;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Existing Styles */
+       /* Navbar */
+.navbar-custom {
+  background: linear-gradient(135deg, #ffffff, #ffffff);
+  padding: 10px 15px;
+}
+
+.navbar-nav {
+  gap: 30px;
+}
+
+.nav-link {
+  color: black;
+  font-size: 1rem;
+  font-weight: 400px;
+  padding: 8px 10px;
+  transition: color 0.3s;
+  position: relative;
+}
+
+.nav-link:hover {
+  color: #333;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -3px;
+  width: 0;
+  height: 2px;
+  background-color: #124E66;
+  transition: width 0.3s, left 0.3s;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+/* Logo */
+.navbar-brand img {
+  width: 70px;
+  height: auto;
+}
+
+/* User Icon */
+.user-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.user-icon img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.user-icon img:hover {
+  transform: scale(1.1);
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 50px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  width: 150px;
+  padding: 10px 0;
+  text-align: left;
+}
+
+.dropdown-menu a {
+  display: block;
+  padding: 10px 15px;
+  text-decoration: none;
+  color: black;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.dropdown-menu a:hover {
+  background: #f1f1f1;
+}
+
+/* Content */
+.content {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+@media (max-width: 991px) {
+  .navbar-container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .navbar-collapse {
+    text-align: center;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .user-icon {
+    display: none;
+  }
+}
+
+    .error {
+    color: red; 
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid navbar-container">
+            <!-- Logo -->
+            <a class="navbar-brand" href="index.html">
+                <img src="./assets/images/logo.webp" alt="NOVA Logo">
+            </a>
+    
+            <!-- Navbar Toggler -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <!-- Navbar Links -->
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Recharge</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Plans</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">FAQ</a></li>
+                </ul>
+            </div>
+    
+            <!-- User Icon with Dropdown -->
+            <div class="user-icon">
+                <img src="./assets/images/user.webp" alt="User" id="userDropdown">
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <a href="profile.html">My Profile</a>
+                    <a href="index.html" id="logout">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+    </div>
+    
+    <!-- start: Payment -->
+    <section class="payment-section">
+        <div class="container">
+            <div class="payment-wrapper">
+                <div class="payment-left">
+                    <div class="payment-header">
+                        <div class="payment-header-icon"><i class="ri-flashlight-fill"></i></div>
+                        <div class="payment-header-title">Payment Details</div>
+                        <p class="payment-header-description">Recharge for 9342593511</p>
+                    </div>
+                    <div class="payment-content">
+                        <div class="payment-body">
+                            <div class="payment-plan">
+                                <div class="payment-plan-info">
+                                    <div class="payment-plan-info-name">NOVA 5G PACK</div>
+                                    <div class="payment-plan-info-price">₹899</div>
+                                </div>
+                                <a href="./plans-page.html" class="payment-plan-change">Change</a>
+                            </div>
+                            <div class="payment-summary">
+                                <div class="payment-summary-item">
+                                    <div class="payment-summary-name">Validity</div>
+                                    <div class="payment-summary-price">28 days</div>
+                                </div>
+                                <div class="payment-summary-item">
+                                    <div class="payment-summary-name">SMS</div>
+                                    <div class="payment-summary-price">100/Day</div>
+                                </div>
+                                <div class="payment-summary-item">
+                                    <div class="payment-summary-name">Data</div>
+                                    <div class="payment-summary-price">Unlimited</div>
+                                </div>
+                                <div class="payment-summary-item">
+                                    <div class="payment-summary-name">Calls</div>
+                                    <div class="payment-summary-price">Unlimited</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="payment-right">
+                    <form action="#" id="paymentForm" class="payment-form">
+                        <h1 class="payment-title">Payment Details</h1>
+                        <div class="payment-method">
+                            <input type="radio" name="payment-method" id="method-1" checked>
+                            <label for="method-1" class="payment-method-item">
+                                <img src="./assets/images/mastercard.png" alt="">
+                            </label>
+                            <input type="radio" name="payment-method" id="method-2">
+                            <label for="method-2" class="payment-method-item">
+                                <a href="./upi.html"><img src="./assets/images/upi.svg" style="margin-top: 15px;" alt=""></a>
+                            </label>
+                            <input type="radio" name="payment-method" id="method-3">
+                            <label for="method-3" class="payment-method-item">
+                                <a href="./netbanking.html"><img src="./assets/images/netbanking.svg" alt=""></a>
+                            </label>
+                        </div>
+                        <div class="payment-form-group">
+                            <input type="email" placeholder="Email" class="payment-form-control" id="email">
+                            <label for="email" class="payment-form-label payment-form-label"></label>
+                        </div>
+                        <div class="payment-form-group">
+                            <input type="text" placeholder="Card Number" class="payment-form-control" id="card-number">
+                            <label for="card-number" class="payment-form-label payment-form-label"></label>
+                        </div>
+                        <div class="payment-form-group">
+                            <input type="text" placeholder="Card holder Name" class="payment-form-control" id="card-holder-name">
+                            <label for="card-holder-name" class="payment-form-label payment-form-label"></label>
+                        </div>
+                        <div class="payment-form-group-flex">
+                            <div class="payment-form-group">
+                                <input type="date" placeholder="" class="payment-form-control" id="expiry-date">
+                                <label for="expiry-date" class="payment-form-label payment-form-label"></label>
+                            </div>
+                            <div class="payment-form-group">
+                                <input type="text" placeholder="CVV" class="payment-form-control" id="cvv">
+                                <label for="cvv" class="payment-form-label payment-form-label"></label>
+                            </div>
+                        </div>
+                        <button type="submit" class="payment-form-submit-button"><i class="ri-wallet-line"></i> Pay</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- end: Payment -->
+
+
+
+
+    <!-- Include jQuery & jQuery Validation Plugin -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+    $("#email").attr("name", "email");
+    $("#card-number").attr("name", "card_number");
+    $("#card-holder-name").attr("name", "card_holder_name");
+    $("#expiry-date").attr("name", "expiry_date");
+    $("#cvv").attr("name", "cvv");
+
+    $("#paymentForm").validate({
+        focusInvalid: false, // Prevents auto-scrolling
+        rules: {
+            email: {
+                required: true,
+                email: true
+            },
+            card_number: {
+                required: true,
+                digits: true,
+                minlength: 16,
+                maxlength: 16
+            },
+            card_holder_name: {
+                required: true,
+                minlength: 3
+            },
+            expiry_date: {
+                required: true,
+                date: true
+            },
+            cvv: {
+                required: true,
+                digits: true,
+                minlength: 3,
+                maxlength: 3
+            }
+        },
+        messages: {
+            email: {
+                required: "Email is required",
+                email: "Enter a valid email"
+            },
+            card_number: {
+                required: "Card number is required",
+                digits: "Card number must be numeric",
+                minlength: "Card number must be 16 digits",
+                maxlength: "Card number must be 16 digits"
+            },
+            card_holder_name: {
+                required: "Card holder name is required",
+                minlength: "Name must be at least 3 characters"
+            },
+            expiry_date: {
+                required: "Expiry date is required",
+                date: "Enter a valid date"
+            },
+            cvv: {
+                required: "CVV is required",
+                digits: "CVV must be numeric",
+                minlength: "CVV must be at least 3 digits",
+                maxlength: "CVV must be at most 3 digits"
+            }
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element); // Keeps the error message in the correct place
+        },
+        highlight: function (element) {
+            $(element).addClass("is-invalid"); // Bootstrap styling for invalid inputs
+        },
+        unhighlight: function (element) {
+            $(element).removeClass("is-invalid"); // Removes error styling when input is corrected
+        },
+        submitHandler: function (form) {
+            $("#loadingOverlay").fadeIn();
+            setTimeout(function () {
+                window.location.href = 'success.html';
+            }, 3000);
+        }
+    });
+
+    $(".payment-form-submit-button").click(function (event) {
+        if (!$("#paymentForm").valid()) {
+            event.preventDefault();
+        }
+    });
+
+    // Fix issue where email stays red even when valid
+    $("#email").on("input", function () {
+        if ($(this).valid()) {
+            $(this).removeClass("is-invalid");
+        }
+    });
+});
+
+</script>
+
+    
+    <script>
+        // Handle payment form submission
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Show loading overlay
+            document.getElementById('loadingOverlay').style.display = 'flex';
+
+            // Simulate payment process and redirect after 3 seconds
+            setTimeout(function() {
+                // Redirect to success page (you can replace this with your actual page)
+                window.location.href = 'success.html'; 
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
