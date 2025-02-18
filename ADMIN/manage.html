@@ -10,13 +10,13 @@
 </head>
 <body>
     <div class="sidebar">
-        <img src="./assets/images/logo.webp" alt="">
+        <img src="./logo copy.webp" alt="">
         <ul class="menu">
-            <li  onclick="window.location.href='./dashboard.html'"><i class="fa-solid fa-clock"></i> Expiring</li>
+            <li onclick="window.location.href='./dashboard.html'"><i class="fa-solid fa-clock"></i> Expiring</li>
             <li class="active" onclick="window.location.href='manage.html'"><i class="fa-solid fa-list"></i> Manage</li>
             <li onclick="window.location.href='analytics.html'"><i class="fa-solid fa-chart-line"></i> Analytics</li>
         </ul>
-        <div class="logout" onclick="window.location.href='./index.html.html'"><i class="fa-solid fa-sign-out-alt"></i> Logout</div>
+        <div class="logout" onclick="window.location.href='./index.html'"><i class="fa-solid fa-sign-out-alt"></i> Logout</div>
     </div>
     <div class="content">
         <div id="expiring" class="page active">
@@ -31,138 +31,277 @@
                     </div>
                 </div>        
             </div>
-            <!-- HEADER ENDS -->
-        <div class="container manage-plans-container">
-            <h2>Manage Plans</h2>
-            <div class="category-form">
-            <h3>Add Category</h3>
-            <input type="text" id="categoryName" placeholder="Category Name">
-            <button onclick="addCategory()">Add Category</button>
+            
+        </div>
+
+        <!-- logout pop up -->
+        <div id="logoutPopup" class="logout-popup">
+            <img src="./assets/images/tick-mark.png" alt="" height="30px" width="30px"><br>
+            Logged Out successfully
+        </div>
+
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Add Category</h5>
+                            <div class="mb-3">
+                                <input type="text" id="categoryName" class="form-control" placeholder="Category Name">
+                            </div>
+                            <button class="btn btn-primary" onclick="addCategory()">Add Category</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Add Plan</h5>
+                            <div class="mb-3">
+                                <input type="text" id="planName" class="form-control" placeholder="Plan Name">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" id="planPrice" class="form-control" placeholder="Plan Price">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" id="planValidity" class="form-control" placeholder="Plan Validity">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" id="planSMS" class="form-control" placeholder="SMS">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" id="planData" class="form-control" placeholder="Data">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" id="planCalls" class="form-control" placeholder="Calls">
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" id="planBenefits" class="form-control" placeholder="Benefits">
+                            </div>
+                            <div class="mb-3">
+                                <select id="planCategory" class="form-select">
+                                    <option value="">Select Category</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" onclick="addPlan()">Add Plan</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="plan-form">
-            <h3>Add Plan</h3>
-            <input type="text" id="planName" placeholder="Plan Name">
-            <input type="text" id="planPrice" placeholder="Plan Price">
-            <input type="text" id="planValidity" placeholder="Plan Validity">
-            <select id="planCategory">
-                <option value="">Select Category</option>
-            </select>
-            <button onclick="addPlan()">Add Plan</button>
-            </div>
-            <div class="plan-list" id="planList">
-            <h3>All Plans</h3>
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">All Plans</h5>
+                            <div id="planList"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <style>
-        .modal {
-            display: none; 
-            position: fixed; 
-            z-index: 1; 
-            left: 0;
-            top: 0;
-            width: 100%; 
-            height: 100%; 
-            overflow: auto; 
-            background-color: rgba(0,0,0,0.8); 
-        }
+    </div>
 
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto; 
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%; 
-            text-align: center;
-            color: black;
-            border-radius: 10px;
-        }
+    <script src="./script.js"></script>
 
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
+    <script>
+        let categories = ["Popular", "Unlimited"];
+        let plans = [];
 
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        </style>
-
-        <script>
-            let categories = [];
-            let plans = [];
-
-            function addCategory() {
-            let category = document.getElementById("categoryName").value;
-            if (category) {
-                categories.push(category);
-                document.getElementById("categoryName").value = "";
-                updateCategoryDropdown();
-            }
-            }
-
-            function updateCategoryDropdown() {
+        function updateCategoryDropdown() {
             let dropdown = document.getElementById("planCategory");
             dropdown.innerHTML = '<option value="">Select Category</option>';
             categories.forEach(cat => {
                 dropdown.innerHTML += `<option value="${cat}">${cat}</option>`;
             });
-            }
+        }
 
-            function addPlan() {
+        function addPlan() {
             let name = document.getElementById("planName").value;
             let price = document.getElementById("planPrice").value;
             let validity = document.getElementById("planValidity").value;
+            let sms = document.getElementById("planSMS").value;
+            let data = document.getElementById("planData").value;
+            let calls = document.getElementById("planCalls").value;
+            let benefits = document.getElementById("planBenefits").value;
             let category = document.getElementById("planCategory").value;
-            if (name && price && validity && category) {
-                let plan = { name, price, validity, category };
+            if (name && price && validity && category && sms && data && calls && benefits) {
+                let plan = { name, price, validity, category, sms, data, calls, benefits };
                 plans.push(plan);
                 document.getElementById("planName").value = "";
                 document.getElementById("planPrice").value = "";
                 document.getElementById("planValidity").value = "";
+                document.getElementById("planSMS").value = "";
+                document.getElementById("planData").value = "";
+                document.getElementById("planCalls").value = "";
+                document.getElementById("planBenefits").value = "";
                 document.getElementById("planCategory").value = "";
                 displayPlans();
             }
-            }
+        }
 
-            function displayPlans() {
+        function displayPlans() {
             let list = document.getElementById("planList");
-            list.innerHTML = '<h3>All Plans</h3>';
-            plans.forEach((plan, index) => {
-                list.innerHTML += `
-                <div class='plan-item'>
-                    <span>${plan.name} - ${plan.price} - ${plan.validity} days (${plan.category})</span>
-                    <button onclick="editPlan(${index})">Edit</button>
-                    <button onclick="deletePlan(${index})">Delete</button>
-                </div>`;
-            });
-            }
+            list.innerHTML = `
+                <h3></h3>
+                <table class="plan-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price (Rs)</th>
+                            <th>Validity (days)</th>
+                            <th>Category</th>
+                            <th>SMS</th>
+                            <th>Data</th>
+                            <th>Calls</th>
+                            <th>Benefits</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${plans.map((plan, index) => `
+                            <tr>
+                                <td>${plan.name}</td>
+                                <td>${plan.price}</td>
+                                <td>${plan.validity}</td>
+                                <td>${plan.category}</td>
+                                <td>${plan.sms}</td>
+                                <td>${plan.data}</td>
+                                <td>${plan.calls}</td>
+                                <td>${plan.benefits}</td>
+                                <td class="action-buttons">
+                                    <button class="edit" onclick="editPlan(${index})">Edit</button>
+                                    <button class="delete" onclick="deletePlan(${index})">Delete</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
 
-            function deletePlan(index) {
+        function deletePlan(index) {
             plans.splice(index, 1);
             displayPlans();
-            }
+        }
 
-            function editPlan(index) {
+        function editPlan(index) {
             let plan = plans[index];
             document.getElementById("planName").value = plan.name;
             document.getElementById("planPrice").value = plan.price;
             document.getElementById("planValidity").value = plan.validity;
+            document.getElementById("planSMS").value = plan.sms;
+            document.getElementById("planData").value = plan.data;
+            document.getElementById("planCalls").value = plan.calls;
+            document.getElementById("planBenefits").value = plan.benefits;
             document.getElementById("planCategory").value = plan.category;
             deletePlan(index);
-            }
-        </script>
-        <!-- logout pop up -->
-        <div id="logoutPopup" class="logout-popup">
-        <img src="./assets/images/tick-mark.png" alt="" height="30px" width="30px"><br>
-        Logged Out successfully
-        </div>
+        }
 
-<script src="./script.js"></script>
-    
+        function showCategoryAddedMessage() {
+            let message = document.createElement("div");
+            message.className = "success-message";
+            message.innerText = "Category added successfully!";
+            document.body.appendChild(message);
+            setTimeout(() => {
+                message.remove();
+            }, 1000);
+        }
+
+        function addCategory() {
+            let category = document.getElementById("categoryName").value;
+            if (category) {
+                categories.push(category);
+                document.getElementById("categoryName").value = "";
+                updateCategoryDropdown();
+                showCategoryAddedMessage();
+            }
+        }
+
+        // Call updateCategoryDropdown to populate the dropdown initially
+        updateCategoryDropdown();
+
+        // Adding dummy plans
+        plans = [
+            { name: "Basic Plan", price: "99", validity: "28", category: "Popular", sms: "100 SMS", data: "1GB", calls: "Unlimited", benefits: "None" },
+            { name: "Standard Plan", price: "199", validity: "56", category: "Unlimited", sms: "200 SMS", data: "2GB", calls: "Unlimited", benefits: "Free Caller Tune" },
+            { name: "Premium Plan", price: "299", validity: "84", category: "Popular", sms: "300 SMS", data: "3GB", calls: "Unlimited", benefits: "Free Caller Tune, OTT Subscription" }
+        ];
+
+        // Initial display of plans
+        displayPlans();
+    </script>
+
+    <style>
+        .plan-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .plan-table th, .plan-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .plan-table th {
+            background-color: #f2f2f2;
+        }
+
+        .plan-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .plan-table tr:hover {
+            background-color: #ddd;
+        }
+
+        .plan-table .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .plan-table .action-buttons button {
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .plan-table .action-buttons button.edit {
+            background-color: #124e66;
+            color: white;
+        }
+
+        .plan-table .action-buttons button.delete {
+            background-color: black;
+            color: white;
+        }
+
+        .card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-control, .form-select {
+            margin-bottom: 10px;
+        }
+
+        .btn-primary {
+            background-color: #124e66;
+            border-color: #124e66;
+        }
+
+        .btn-primary:hover {
+            background-color: #0d3a4d;
+            border-color: #0d3a4d;
+        }
+    </style>
 </body>
 </html>

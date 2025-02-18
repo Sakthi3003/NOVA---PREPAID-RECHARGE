@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard Sidebar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./dashboard.css">
+</head>
+<body>
+    <div class="sidebar">
+        <img src="./logo.webp" alt="">
+        <ul class="menu">
+            <li onclick="window.location.href='expiring.html'"><i class="fa-solid fa-clock"></i> Expiring</li>
+            <li onclick="window.location.href='manage.html'"><i class="fa-solid fa-list"></i> Manage</li>
+            <li class="active" onclick="window.location.href='analytics.html'"><i class="fa-solid fa-chart-line"></i> Analytics</li>
+        </ul>
+        <div class="logout" onclick="window.location.href='./index.html'"><i class="fa-solid fa-sign-out-alt"></i> Logout</div>
+    </div>
+    <div class="content">
+        <div id="analytics" class="page active">
+            <div class="header">
+                <h2>DASHBOARD</h2>
+                <div class="search-wrapper">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search.." />
+                        <button>
+                            <img src="./assets/images/search.png" alt="" height="30px" width="30px"> <!-- Unicode search icon -->
+                        </button>
+                    </div>
+                </div>        
+            </div>
+            <!-- HEADER ENDS -->
+            <!-- ANALYTICS CONTENT -->
+            <div class="row mt-4">
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Subscribers</h5>
+                            <p class="card-text">1,234</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Active Plans</h5>
+                            <p class="card-text">567</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Expiring Plans</h5>
+                            <p class="card-text">89</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Revenue</h5>
+                            <p class="card-text">$12,345</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Monthly Revenue</h5>
+                            <canvas id="revenueChart" style="max-height: 300px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">New Subscribers</h5>
+                            <canvas id="subscribersChart" style="max-height: 300px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Plan Usage</h5>
+                            <canvas id="usageChart" style="max-height: 300px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Payment Methods</h5>
+                            <canvas id="paymentMethodsChart" style="max-height: 300px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .card {
+            margin-bottom: 30px; /* Increased margin to bring cards down */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .card-title {
+            font-size: 1.2rem; /* Increased font size */
+            font-weight: 600;
+            color: #333;
+        }
+        .card-text {
+            font-size: 1.25rem; /* Increased font size */
+            color: #666;
+        }
+        .card-body {
+            padding: 30px; /* Increased padding */
+        }
+        .row {
+            margin: 0 -15px;
+        }
+        .col-md-3, .col-md-6 {
+            padding: 0 15px;
+        }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctxRevenue = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(ctxRevenue, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                datasets: [{
+                    label: 'Revenue',
+                    data: [1200, 1900, 3000, 5000, 2000, 3000],
+                    backgroundColor:  '#124e66',
+                    borderColor: '#124e66',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        const ctxSubscribers = document.getElementById('subscribersChart').getContext('2d');
+        const subscribersChart = new Chart(ctxSubscribers, {
+            type: 'bar',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+                datasets: [{
+                    label: 'New Subscribers',
+                    data: [50, 60, 70, 180, 190, 220],
+                    backgroundColor: [
+                        '#124e66',
+                        '#748d92',
+                        '#d3d3d4',
+                        '#2e3944',
+                        '#748d92',
+                        '#748d92'
+                    ],
+                    borderColor: [
+                        '#124e66',
+                        '#748d92',
+                        '#d3d3d4',
+                        '#2e3944',
+                        '#748d92',
+                        '#748d92'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        const ctxUsage = document.getElementById('usageChart').getContext('2d');
+        const usageChart = new Chart(ctxUsage, {
+            type: 'doughnut',
+            data: {
+                labels: ['Plan A', 'Plan B', 'Plan C', 'Plan D'],
+                datasets: [{
+                    label: 'Plan Usage',
+                    data: [300, 50, 100, 150],
+                    backgroundColor: [
+                        '#124e66',
+                        '#748d92',
+                        '#d3d3d4',
+                        '#2e3944'
+                    ],
+                    borderColor: [
+                        '#124e66',
+                        '#748d92',
+                        '#d3d3d4',
+                        '#2e3944'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += context.raw;
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        const ctxPaymentMethods = document.getElementById('paymentMethodsChart').getContext('2d');
+        const paymentMethodsChart = new Chart(ctxPaymentMethods, {
+            type: 'pie',
+            data: {
+                labels: ['UPI', 'Netbanking', 'Credit Card', 'Debit Card'],
+                datasets: [{
+                    label: 'Payment Methods',
+                    data: [40, 30, 20, 10],
+                    backgroundColor: [
+                        '#124e66',
+                        '#748d92',
+                        '#d3d3d4',
+                        '#2e3944'
+                    ],
+                    borderColor: [
+                        '#124e66',
+                        '#748d92',
+                        '#d3d3d4',
+                        '#2e3944'
+                    ],
+                    borderWidth: 1
+                }],
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += context.raw;
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- logout pop up -->
+    <div id="logoutPopup" class="logout-popup">

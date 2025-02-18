@@ -10,7 +10,7 @@
 </head>
 <body>
     <div class="sidebar">
-        <img src="./assets/images/logo.webp" alt="">
+        <img src="./logo.webp" alt="">
         <ul class="menu">
             <li class="active" onclick="window.location.href='expiring.html'"><i class="fa-solid fa-clock"></i> Expiring</li>
             <li onclick="window.location.href='manage.html'"><i class="fa-solid fa-list"></i> Manage</li>
@@ -101,3 +101,48 @@
 
 </body>
 </html>
+<script>
+    let subscribers = [
+        { id: 1, name: "John Doe", planExpiry: "2023-10-15", transactions: [{ id: "T1", date: "2023-10-01", amount: 100 }] },
+        { id: 2, name: "Jane Smith", planExpiry: "2023-10-16", transactions: [{ id: "T2", date: "2023-10-02", amount: 150 }] },
+        { id: 3, name: "Alice Johnson", planExpiry: "2023-10-17", transactions: [{ id: "T3", date: "2023-10-03", amount: 200 }] }
+    ];
+
+    function filterByDays(days) {
+        let filteredSubscribers = subscribers.filter(sub => {
+            let expiryDate = new Date(sub.planExpiry);
+            let today = new Date();
+            let diffTime = Math.abs(expiryDate - today);
+            let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return days === 0 || diffDays <= days;
+        });
+        displaySubscribers(filteredSubscribers);
+    }
+
+    function displaySubscribers(subscribers) {
+        let list = document.getElementById("subscribersList");
+        list.innerHTML = subscribers.map(sub => `<li onclick="showTransactions(${sub.id})">${sub.name} - Expiry: ${sub.planExpiry}</li>`).join('');
+    }
+
+    function showTransactions(subscriberId) {
+        let subscriber = subscribers.find(sub => sub.id === subscriberId);
+        let tableBody = document.getElementById("transactionTableBody");
+        if (subscriber && subscriber.transactions.length > 0) {
+            tableBody.innerHTML = subscriber.transactions.map(trans => `
+                <tr>
+                    <td>${trans.id}</td>
+                    <td>${trans.date}</td>
+                    <td>${trans.amount}</td>
+                </tr>
+            `).join('');
+            document.getElementById("downloadTransaction").disabled = false;
+        } else {
+            tableBody.innerHTML = `<tr><td colspan="3">No transactions found</td></tr>`;
+            document.getElementById("downloadTransaction").disabled = true;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        filterByDays(0);
+    });
+</script></script>
